@@ -1,0 +1,34 @@
+{
+  "name": "es6-require",
+  "version": "0.0.1",
+  "description": "require es6 modules without polluting global require",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "babel": "^5.8.5",
+    "eslint": "^1.0.0-rc-3",
+    "eslint-config-standard": "^4.0.0-2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hayes/es6-require.git"
+  },
+  "keywords": [
+    "es6",
+    "require",
+    "shim",
+    "load"
+  ],
+  "author": "Michael Hayes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hayes/es6-require/issues"
+  },
+  "homepage": "https://github.com/hayes/es6-require"
+}
