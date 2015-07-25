@@ -1,6 +1,6 @@
 {
   "name": "es6-require",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "require es6 modules without polluting global require",
   "main": "index.js",
   "directories": {
