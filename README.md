@@ -23,5 +23,5 @@ npm install es6-require
 In an es5 js file
 ```
 var require = module.require('es6-require')(module)
-require('./my-es6-module')
+require('./my-module.es6')
 ```
