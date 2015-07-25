@@ -7,11 +7,12 @@
     "test": "test"
   },
   "dependencies": {
-    "babel": "^5.8.5",
+    "babel": "^5.8.5"
+  },
+  "devDependencies": {
     "eslint": "^1.0.0-rc-3",
     "eslint-config-standard": "^4.0.0-2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
