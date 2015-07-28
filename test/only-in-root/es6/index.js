@@ -10,14 +10,14 @@ module.exports = function (t) {
   try {
     notFound = require('../other.es6')
   } catch (err) {
-    t.equal(err.message, 'Unexpected token >')
+    t.ok(err.message.match(/Unexpected token/))
   }
   t.equal(notFound)
 
   try {
     notFound = require('./node_modules/foo/bar.es6')
   } catch (err) {
-    t.equal(err.message, 'Unexpected token >')
+    t.ok(err.message.match(/Unexpected token/))
   }
   t.equal(notFound)
 
