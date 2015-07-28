@@ -11,7 +11,8 @@ function es6Require (rootModule, _options, _root) {
   ES6Module._extensions = Object.create(Module._extensions)
 
   var options = _options || {}
-  var extensions = Object.keys(Module._extensions).concat(options.extensions || ['.es6', '.jsx'])
+  var es6Extensions = options.extensions || ['.es6', '.jsx']
+  var extensions = Object.keys(Module._extensions).concat(es6Extensions)
   var root = _root || path.dirname(rootModule.filename)
 
   options.babel = options.babel || {}
@@ -80,7 +81,7 @@ function es6Require (rootModule, _options, _root) {
     var ext = path.extname(filename)
     var code
 
-    if (extensions.indexOf(ext) !== -1) {
+    if (es6Extensions.indexOf(ext) !== -1) {
       code = babel.transform(content, options.babel).code
     } else {
       code = content
