@@ -1,6 +1,7 @@
 var Module = require('module')
 var babel = require('babel')
 var path = require('path')
+var util = require('util')
 var fs = require('fs')
 var vm = require('vm')
 
@@ -10,12 +11,12 @@ function es6Require (rootModule, _options, _root) {
   var ES6Module = Object.create(Module)
   ES6Module._extensions = Object.create(Module._extensions)
 
-  var options = _options || {}
+  var options = util._extend({}, _options || {})
   var es6Extensions = options.extensions || ['.es6', '.jsx']
   var extensions = Object.keys(Module._extensions).concat(es6Extensions)
   var root = _root || path.dirname(rootModule.filename)
 
-  options.babel = options.babel || {}
+  options.babel = util._extend({}, options.babel || {})
 
   if (options.babel.retainLines === undefined) options.babel.retainLines = true
 
