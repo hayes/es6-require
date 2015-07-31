@@ -4,7 +4,8 @@
   "description": "require es6 modules without polluting global require",
   "main": "index.js",
   "dependencies": {
-    "babel": "^5.8.5"
+    "babel": "^5.8.5",
+    "babel-runtime": "^5.8.20"
   },
   "devDependencies": {
     "eslint": "^1.0.0-rc-3",

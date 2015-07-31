@@ -15,10 +15,12 @@ function es6Require (rootModule, _options, _root) {
   var es6Extensions = options.extensions || ['.es6', '.jsx']
   var extensions = Object.keys(Module._extensions).concat(es6Extensions)
   var root = _root || path.dirname(rootModule.filename)
+  var rootNodeModules = path.resolve(__dirname, 'node_modules')
 
   options.babel = util._extend({}, options.babel || {})
 
   if (options.babel.retainLines === undefined) options.babel.retainLines = true
+  if (options.babel.optional === undefined) options.babel.optional = ['runtime']
 
   for (var i = 0; i < extensions.length; ++i) {
     ES6Module._extensions[extensions[i]] = compile
@@ -30,34 +32,38 @@ function es6Require (rootModule, _options, _root) {
     require.main = process.mainModule
     require.cache = Module._cache
     require.resolve = resolve
+
+    var clonedModule = Object.create(original)
+    clonedModule.paths = original.paths.concat(rootNodeModules)
+
     return require
 
     function resolve (req) {
       var prev = Module._extensions
       Module._extensions = ES6Module._extensions
       try {
-        return ES6Module._resolveFilename(req, original)
+        return ES6Module._resolveFilename(req, clonedModule)
       } finally {
         Module._extensions = prev
       }
     }
 
     function require (req) {
-      if (!req || typeof req !== 'string') return original.require(req)
+      if (!req || typeof req !== 'string') return clonedModule.require(req)
       try {
         var filename = resolve(req)
       } catch (err) {
-        return original.require(req)
+        return clonedModule.require(req)
       }
 
       var relative = path.relative(root, filename)
-      if (filename[0] !== '/') return original.require(req)
-      if (relative[0] === '.' || relative[0] === '/') return original.require(req)
-      if (relative.indexOf('node_modules') !== -1) return original.require(req)
+      if (filename[0] !== '/') return clonedModule.require(req)
+      if (relative[0] === '.' || relative[0] === '/') return clonedModule.require(req)
+      if (relative.indexOf('node_modules') !== -1) return clonedModule.require(req)
 
       var cachedModule = Module._cache[filename]
       if (cachedModule) return cachedModule.exports
-      var module = new Module(filename, original)
+      var module = new Module(filename, clonedModule)
       Module._cache[filename] = module
       module.filename = filename
       module.paths = Module._nodeModulePaths(path.dirname(filename))
@@ -89,7 +95,7 @@ function es6Require (rootModule, _options, _root) {
     }
 
     var wrapper = wrap(code)
-    var compiled = vm.runInThisContext(wrapper, {filename: filename})
+    var compiled = vm.runInThisContext(wrapper, filename)
     return compiled.call(module.exports, module.exports, require, module, filename, dirname)
   }
 }
