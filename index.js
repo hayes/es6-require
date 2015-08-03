@@ -12,8 +12,7 @@ function es6Require (rootModule, _options, _root) {
   ES6Module._extensions = Object.create(Module._extensions)
 
   var options = util._extend({}, _options || {})
-  var es6Extensions = options.extensions || ['.es6', '.jsx']
-  var extensions = Object.keys(Module._extensions).concat(es6Extensions)
+  var es6Extensions = options.extensions || ['.es6', '.jsx', '.js']
   var root = _root || path.dirname(rootModule.filename)
   var rootNodeModules = path.resolve(__dirname, 'node_modules')
 
@@ -22,8 +21,8 @@ function es6Require (rootModule, _options, _root) {
   if (options.babel.retainLines === undefined) options.babel.retainLines = true
   if (options.babel.optional === undefined) options.babel.optional = ['runtime']
 
-  for (var i = 0; i < extensions.length; ++i) {
-    ES6Module._extensions[extensions[i]] = compile
+  for (var i = 0; i < es6Extensions.length; ++i) {
+    ES6Module._extensions[es6Extensions[i]] = compile
   }
 
   return makeRequire(rootModule, options)
@@ -33,6 +32,7 @@ function es6Require (rootModule, _options, _root) {
     require.cache = Module._cache
     require.resolve = resolve
 
+    // ensure that babel helpers are accessible
     var clonedModule = Object.create(original)
     clonedModule.paths = original.paths.concat(rootNodeModules)
 
@@ -68,9 +68,12 @@ function es6Require (rootModule, _options, _root) {
       module.filename = filename
       module.paths = Module._nodeModulePaths(path.dirname(filename))
 
+      var ext = path.extname(filename)
+      var compiler = ES6Module._extensions[ext] || module._extensions[ext]
+
       var hadException = true
       try {
-        compile(module, filename)
+        compiler(module, filename)
         hadException = false
       } finally {
         if (hadException) delete Module._cache[filename]
