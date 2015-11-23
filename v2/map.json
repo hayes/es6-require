@@ -1,0 +1,6 @@
+{
+  "version":3,
+  "sources": ["foo.js"],
+  "names":[],
+  "mappings":"AAAA,CAAC,YAAY;AACX,SAAO,CAAC,GAAG,CAAC,cAAc,CAAC,CAAC;CAC7B,CAAA,CAAE"
+ }
